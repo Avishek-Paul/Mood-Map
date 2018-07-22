@@ -1,6 +1,9 @@
+import time
+
 class MoodMap(object):
     """Logic for the collection of tweets"""
     def __init__(self):
+        self.last_update = time.time();
         self.total_happy_count = 0
         self.total_sad_count = 0
         self.total_angry_count = 0
@@ -11,15 +14,26 @@ class MoodMap(object):
         self.fear_words = ['afraid', 'alarmed', 'anxious', 'aversive', 'distrustful', 'fearful', 'jumpy', 'nervous', 'perturbed', 'rattled', 'shaky', 'startled', 'suspicious', 'unnerved', 'unsettled', 'wary', 'worried']
         
     def filter_logic(self,text):
-        if any(x in text for x in self.happy_words):
-            self.total_happy_count+=1
-        if any(x in text for x in self.sad_words):
-            self.total_sad_count+=1
-        if any(x in text for x in self.angry_words):
-            self.total_angry_count+=1
-        if any(x in text for x in self.fear_words):
-            self.total_fear_count+=1
+        
+        if time.time() - self.last_update > 15:
 
+            self.total_happy_count = 0;
+            self.total_sad_count = 0;
+            self.total_angry_count = 0;
+            self.total_fear_count = 0;
+            self.last_update = time.time();
+
+        else:
+
+            if any(x in text for x in self.happy_words):
+                self.total_happy_count+=1
+            if any(x in text for x in self.sad_words):
+                self.total_sad_count+=1
+            if any(x in text for x in self.angry_words):
+                self.total_angry_count+=1
+            if any(x in text for x in self.fear_words):
+                self.total_fear_count+=1
+            
     def print_values(self):
         values = "Happy: {}\n Sad: {}\n Angry: {}\n Scared: {}\n"
         values = values.format(self.total_happy_count,

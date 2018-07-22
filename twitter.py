@@ -11,6 +11,7 @@ class StreamHandler(tweepy.StreamListener):
     moodmap = MoodMap()
     
     def on_status(self, status):
+        
         self.moodmap.filter_logic(status.text.lower())
         self.moodmap.print_values()
 
@@ -76,7 +77,7 @@ class PyTweet(object):
         tweepy_auth.set_access_token(ACCESS_TOKEN,ACCESS_TOKEN_SECRET)
         self.stream_api = tweepy.API(tweepy_auth)
 
-    def stream(self,track,locations=None,languages=None,saved_tweets_location=None):
+    def stream(self,track=None,locations=None,languages=None,saved_tweets_location=None):
         self.setup_stream()
         stream_handler = StreamHandler()
         stream_handler.saved_tweets_location = saved_tweets_location
