@@ -13,7 +13,7 @@ class StreamHandler(tweepy.StreamListener):
     def on_status(self, status):
         
         self.moodmap.filter_logic(status.text.lower())
-        self.moodmap.print_values()
+        #self.moodmap.print_curr_values();
 
     def on_error(self, status_code):
         if status_code == 420:
