@@ -1,4 +1,5 @@
 import time
+import tweepy
 from conf.settings import all_words, update_time
 
 class MoodMap(object):
@@ -67,3 +68,4 @@ class MoodMap(object):
                     self.total_angry_count,
                     self.total_fear_count)
         print(values)
+

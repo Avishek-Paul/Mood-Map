@@ -1,7 +1,9 @@
 import json
 from twitter import PyTweet
+from streamhandler import StreamHandler
 from moodmap import MoodMap
 from conf.settings import all_words
+
 
 pytweet = PyTweet()
 moodmap = MoodMap()
@@ -19,8 +21,11 @@ def test_get_user_timeline():
 def test_post_status():
     pytweet.post_status('Testing Testing 1 2 3')
 
+def display_tweets():
+	return str(moodmap.total_happy_count)
+
 if __name__ == '__main__':
-    save_file = None#'stored_tweets.txt'
+    save_file = None #stored_tweets.txt'
     pytweet.stream(track=search_words,
                     locations=[-74,40,-73,41], #NYC
                     saved_tweets_location=save_file)

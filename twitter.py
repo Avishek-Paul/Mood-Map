@@ -3,21 +3,9 @@ import requests
 import urllib.parse 
 import oauth2 as oauth
 import tweepy
+from streamhandler import StreamHandler
 from moodmap import MoodMap
 from conf.settings import API_KEY,API_SECRET,ACCESS_TOKEN,ACCESS_TOKEN_SECRET
-
-class StreamHandler(tweepy.StreamListener):
-    saved_tweets_location = None
-    moodmap = MoodMap()
-    
-    def on_status(self, status):
-        
-        self.moodmap.filter_logic(status.text.lower())
-        #self.moodmap.print_curr_values();
-
-    def on_error(self, status_code):
-        if status_code == 420:
-            return False
 
 class PyTweet(object):
     """Functions to access twitter api"""
@@ -26,6 +14,7 @@ class PyTweet(object):
         self.consumer = oauth.Consumer(key=API_KEY, secret=API_SECRET)
         self.access_token = oauth.Token(key=ACCESS_TOKEN, secret=ACCESS_TOKEN_SECRET)    
         self.client = oauth.Client(self.consumer, self.access_token)
+        self.stream_handler = StreamHandler()
 
     def api_call(self, method, endpoint, query):
         url = endpoint + urllib.parse.urlencode(query)        
@@ -77,9 +66,8 @@ class PyTweet(object):
         tweepy_auth.set_access_token(ACCESS_TOKEN,ACCESS_TOKEN_SECRET)
         self.stream_api = tweepy.API(tweepy_auth)
 
-    def stream(self,track=None,locations=None,languages=None,saved_tweets_location=None):
+    def stream(self, track=None, locations=None, languages=None, saved_tweets_location=None):
         self.setup_stream()
-        stream_handler = StreamHandler()
-        stream_handler.saved_tweets_location = saved_tweets_location
-        stream = tweepy.Stream(auth=self.stream_api.auth, listener=stream_handler)
+        self.stream_handler.saved_tweets_location = saved_tweets_location
+        stream = tweepy.Stream(auth=self.stream_api.auth, listener=self.stream_handler)
         stream.filter(track=track,languages=languages,locations=locations)
