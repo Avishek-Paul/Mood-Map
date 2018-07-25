@@ -10,4 +10,6 @@ all_words = {
     "fear_words" : ['afraid', 'alarmed', 'anxious', 'aversive', 'distrustful', 'fearful', 'jumpy', 'nervous', 'perturbed', 'rattled', 'shaky', 'startled', 'suspicious', 'unnerved', 'unsettled', 'wary', 'worried'],
 }
 
-update_time = 120 #seconds
+update_time = 10 #seconds
+
+log_path = 'server/data/'
