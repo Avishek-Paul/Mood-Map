@@ -27,5 +27,5 @@ def display_tweets():
 if __name__ == '__main__':
     save_file = None #stored_tweets.txt'
     pytweet.stream(track=search_words,
-                    locations=[-74,40,-73,41], #NYC
+                    #locations=[-74,40,-73,41], #NYC
                     saved_tweets_location=save_file)
