@@ -1,7 +1,7 @@
 import os
 import time
 import tweepy
-from conf.settings import all_words, update_time, log_path
+from conf.settings import all_words, update_time, log_path, log_name
 
 class MoodMap(object):
     """Logic for the collection of tweets"""
@@ -32,12 +32,6 @@ class MoodMap(object):
             self.curr_fear_count = 0
                 
             self.last_update = time.time()
-
-            return True
-
-        else:
-            
-            return False
         
     def filter_logic(self,text):
         
@@ -65,7 +59,8 @@ class MoodMap(object):
 
     def get_total_values(self):
         values = "Happy: {}\n Sad: {}\n Angry: {}\n Scared: {}\n"
-        values = values.format(self.total_happy_count,
+        values = values.format(
+                    self.total_happy_count,
                     self.total_sad_count,
                     self.total_angry_count,
                     self.total_fear_count)
@@ -75,9 +70,13 @@ class MoodMap(object):
 
         if not os.path.exists(log_path):
             os.mkdir(log_path)
-
-        filename = 'total_values.txt'
+        
+        filename = log_name
 
         log = open(log_path+filename, 'w+')
+        log.write("---Total Values---<br>")
         log.write(self.get_total_values())
+        log.write("<br>")
+        log.write("---Curr Values---<br>")
+        log.write(self.get_curr_values())
         log.close()
