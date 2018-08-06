@@ -4,7 +4,6 @@ import urllib.parse
 import oauth2 as oauth
 import tweepy
 from streamhandler import StreamHandler
-from moodmap import MoodMap
 from conf.settings import API_KEY,API_SECRET,ACCESS_TOKEN,ACCESS_TOKEN_SECRET
 
 class PyTweet(object):

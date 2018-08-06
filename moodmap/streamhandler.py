@@ -7,7 +7,7 @@ class StreamHandler(tweepy.StreamListener):
     
     def on_status(self, status):
         self.moodmap.reset_curr()
-        self.moodmap.write_log()
+        self.moodmap.write_log_csv()
         self.moodmap.filter_logic(status.text.lower())
 
     def on_error(self, status_code):

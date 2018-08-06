@@ -1,29 +1,42 @@
 import os
-from flask import Flask
+import pandas as pd
+from flask import Flask, request, render_template
 
-log_name = 'total_values.txt'
+log_path = 'data/total_values.csv'
 
 app = Flask(__name__)
 
-def get_display_values():
-    if os.path.exists('data/'+log_name):
-        file = open('data/'+log_name, 'r')
+happy_idx = 0
+sad_idx = 1
+angry_idx = 2
+fear_idx = 3
 
-        total_values = ""
-        for line in file.readlines():
-            total_values += line.strip()
-            total_values += "<br>"
+def update():
+    try:
+        df = pd.read_csv(log_path)
+        kwargs = {
+                'happy_total': df['total'][happy_idx],
+                'sad_total': df['total'][sad_idx],
+                'angry_total': df['total'][angry_idx],
+                'fear_total': df['total'][fear_idx],
 
-        return total_values
-    
-    else:
-        False
+                'happy_current': df['current'][happy_idx],
+                'sad_current': df['current'][sad_idx],
+                'angry_current': df['current'][angry_idx],
+                'fear_current': df['current'][fear_idx]
+            }
+        return kwargs
+    except Exception as e:
+        return e
 
 @app.route('/')
-def update():
-    total_values = get_display_values()
-    return total_values if total_values else "Nothing to display here folks!"
-    
+def index():
+    kwargs = update()
+
+    if type(kwargs) == type({}):
+        return render_template('index.html', **kwargs)
+    else:
+        return "Sorry folks, we're having some technical difficulties! <br>" + str(kwargs)
 
 if __name__ == "__main__":
     app.run()

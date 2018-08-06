@@ -1,6 +1,7 @@
 import os
 import time
 import tweepy
+import pandas as pd
 from conf.settings import all_words, update_time, log_path, log_name
 
 class MoodMap(object):
@@ -8,15 +9,19 @@ class MoodMap(object):
     def __init__(self):
         self.last_update = time.time()
 
-        self.total_happy_count = 0
-        self.total_sad_count = 0
-        self.total_angry_count = 0
-        self.total_fear_count = 0
+        self.total_count = {
+            'happy': 0,
+            'sad': 0,
+            'angry': 0,
+            'fear': 0
+        }
 
-        self.curr_happy_count = 0
-        self.curr_sad_count = 0
-        self.curr_angry_count = 0
-        self.curr_fear_count = 0
+        self.current_count = {
+            'happy': 0,
+            'sad': 0,
+            'angry': 0,
+            'fear': 0
+        }
 
         self.happy_words = all_words['happy_words']
         self.sad_words = all_words['sad_words']
@@ -25,58 +30,27 @@ class MoodMap(object):
 
     def reset_curr(self):
         if time.time() - self.last_update > update_time:
-    
-            self.curr_happy_count = 0
-            self.curr_sad_count = 0
-            self.curr_angry_count = 0
-            self.curr_fear_count = 0
-                
+            self.current_count = {emotion: 0  for emotion in self.current_count}
             self.last_update = time.time()
         
     def filter_logic(self,text):
         
         if any(x in text for x in self.happy_words):
-            self.total_happy_count+=1
-            self.curr_happy_count+=1
+            self.total_count['happy']+=1
+            self.current_count['happy']+=1
         if any(x in text for x in self.sad_words):
-            self.total_sad_count+=1
-            self.curr_sad_count+=1
+            self.total_count['sad']+=1
+            self.current_count['sad']+=1
         if any(x in text for x in self.angry_words):
-            self.total_angry_count+=1
-            self.curr_angry_count+=1
+            self.total_count['angry']+=1
+            self.current_count['angry']+=1
         if any(x in text for x in self.fear_words):
-            self.total_fear_count+=1
-            self.curr_fear_count+=1
-            
-    def get_curr_values(self):
-        values = "Happy: {}\n Sad: {}\n Angry: {}\n Scared: {}\n"
-        values = values.format(
-                    self.curr_happy_count,
-                    self.curr_sad_count,
-                    self.curr_angry_count,
-                    self.curr_fear_count)
-        return values
+            self.total_count['fear']+=1
+            self.current_count['fear']+=1
 
-    def get_total_values(self):
-        values = "Happy: {}\n Sad: {}\n Angry: {}\n Scared: {}\n"
-        values = values.format(
-                    self.total_happy_count,
-                    self.total_sad_count,
-                    self.total_angry_count,
-                    self.total_fear_count)
-        return values
-
-    def write_log(self):
-
-        if not os.path.exists(log_path):
-            os.mkdir(log_path)
-        
-        filename = log_name
-
-        log = open(log_path+filename, 'w+')
-        log.write("---Total Values---<br>")
-        log.write(self.get_total_values())
-        log.write("<br>")
-        log.write("---Curr Values---<br>")
-        log.write(self.get_curr_values())
-        log.close()
+    def write_log_csv(self):
+        tdf = pd.DataFrame.from_dict(self.total_count, orient='index')
+        cdf = pd.DataFrame.from_dict(self.current_count, orient='index')
+        df = tdf.join(cdf, lsuffix='total', rsuffix='current')
+        df.columns = ['total', 'current']
+        df.to_csv(log_path + log_name, index=False)

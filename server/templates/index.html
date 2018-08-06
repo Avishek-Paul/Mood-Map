@@ -25,7 +25,43 @@
 <body>
     
     <div class="jumbotron container">
+
         <h1>Twitter Mood Map</h1>
+
+        <table>
+
+            <tr>
+                <th></th>
+                <th>Total</th>
+                <th>Current</th>
+            </tr>
+            
+            <tr>
+                <td>Happy</td>
+                <td>{{ happy_total }}</td>
+                <td>{{ happy_current }}</td>
+            </tr>
+            
+            <tr>
+                <td>Sad</td>
+                <td>{{ sad_total }}</td>
+                <td>{{ sad_current }}</td>
+            </tr>
+            
+            <tr>
+                <td>Angry</td>
+                <td>{{ angry_total }}</td>
+                <td>{{ angry_current }}</td>
+            </tr>
+            
+            <tr>
+                <td>Fear</td>
+                <td>{{ fear_total }}</td>
+                <td>{{ fear_current }}</td>
+            </tr>
+            
+        </table>              
+
     </div>
 
 </body>
