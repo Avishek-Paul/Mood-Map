@@ -1,0 +1,19 @@
+* {
+    font-family: 'Roboto Slab', serif;
+}
+
+body {
+    background-color: #c0deed;
+}
+
+.jumbotron{
+    margin-top: 25px;
+    padding: 10px 0px 10px 0px;
+    background-color: #0084b4;
+    border-radius: 15px;
+}
+
+.jumbotron h1{
+    color: white;
+    text-align: center;
+}
