@@ -2,3 +2,4 @@
 server/data/*
 *.pyc
 *.vscode
+*.ipynb*

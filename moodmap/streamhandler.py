@@ -2,7 +2,6 @@ import tweepy
 from moodmap import MoodMap
 
 class StreamHandler(tweepy.StreamListener):
-    saved_tweets_location = None
     moodmap = MoodMap()
     
     def on_status(self, status):

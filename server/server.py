@@ -1,8 +1,8 @@
-import os
+
 import pandas as pd
 from flask import Flask, request, render_template
 
-log_path = 'data/total_values.csv'
+log_path = 'server/data/total_values.csv'
 
 app = Flask(__name__)
 

@@ -65,8 +65,7 @@ class PyTweet(object):
         tweepy_auth.set_access_token(ACCESS_TOKEN,ACCESS_TOKEN_SECRET)
         self.stream_api = tweepy.API(tweepy_auth)
 
-    def stream(self, track=None, locations=None, languages=None, saved_tweets_location=None):
+    def stream(self, track=None, locations=None, languages=None):
         self.setup_stream()
-        self.stream_handler.saved_tweets_location = saved_tweets_location
         stream = tweepy.Stream(auth=self.stream_api.auth, listener=self.stream_handler)
         stream.filter(track=track,languages=languages,locations=locations)

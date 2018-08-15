@@ -12,5 +12,5 @@ all_words = {
 
 update_time = 10 #seconds
 
-log_path = '../server/data/'
+log_path = 'server/data/'
 log_name = 'total_values.csv'

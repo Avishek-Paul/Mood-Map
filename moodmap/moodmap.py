@@ -1,4 +1,4 @@
-import os
+
 import time
 import tweepy
 import pandas as pd
@@ -53,4 +53,4 @@ class MoodMap(object):
         cdf = pd.DataFrame.from_dict(self.current_count, orient='index')
         df = tdf.join(cdf, lsuffix='total', rsuffix='current')
         df.columns = ['total', 'current']
-        df.to_csv(log_path + log_name, index=False)
+        df.to_csv(log_path+log_name, index=False, encoding='utf-8')
