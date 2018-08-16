@@ -19,6 +19,15 @@ def test_post_status():
     pytweet.post_status('Testing Testing 1 2 3')
 
 if __name__ == '__main__':
-    pytweet.stream(track=search_words,
-                    #locations=[-74,40,-73,41], #NYC
-                    )
+    try:
+        pytweet.stream(track=search_words,
+                        #locations=[-74,40,-73,41], #NYC
+                        )
+    except KeyboardInterrupt:
+        print("External Interrupt Detected. Exiting program...")
+    except Exception as e:
+        print("Exception occurred. Trying again...")
+        pytweet.stream(track=search_words,
+                #locations=[-74,40,-73,41], #NYC
+                )
+
